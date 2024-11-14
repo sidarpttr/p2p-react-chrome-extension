@@ -1,21 +1,21 @@
 'use strict';
 
+const path = require('path');
 const SizePlugin = require('size-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 const PATHS = require('./paths');
 
-// To re-use webpack configuration across templates,
-// CLI maintains a common webpack configuration file - `webpack.common.js`.
-// Whenever user creates an extension, CLI adds `webpack.common.js` file
-// in template's `config` folder
-const common = {
+module.exports = {
+  entry: {
+    popup: path.join(PATHS.src, 'index.js'),
+    background: path.join(PATHS.src, 'background/background.js'),
+    contentScript: path.join(PATHS.src, 'content/contentScript.js')
+  },
   output: {
-    // the build folder to output bundles and assets in.
     path: PATHS.build,
-    // the filename template for entry chunks
-    filename: '[name].js',
+    filename: '[name].bundle.js'
   },
   devtool: 'source-map',
   stats: {
@@ -25,14 +25,22 @@ const common = {
   },
   module: {
     rules: [
-      // Help webpack in understanding CSS files imported in .js files
+      {
+        test: /\.js$/,
+        exclude: /node_modules/,
+        use: {
+          loader: 'babel-loader',
+          options: {
+            presets: ['@babel/preset-env', '@babel/preset-react']
+          }
+        }
+      },
       {
         test: /\.css$/,
         use: [MiniCssExtractPlugin.loader, 'css-loader'],
       },
-      // Check for images imported in .js files and
       {
-        test: /\.(png|jpe?g|gif)$/i,
+        test: /\.(png|jpe?g|gif|svg)$/i,
         use: [
           {
             loader: 'file-loader',
@@ -46,22 +54,15 @@ const common = {
     ],
   },
   plugins: [
-    // Print file sizes
     new SizePlugin(),
-    // Copy static assets from `public` folder to `build` folder
     new CopyWebpackPlugin({
       patterns: [
-        {
-          from: '**/*',
-          context: 'public',
-        },
+        { from: PATHS.public, to: '.' }
       ]
     }),
-    // Extract CSS into separate files
-    new MiniCssExtractPlugin({
-      filename: '[name].css',
-    }),
+    new MiniCssExtractPlugin()
   ],
+  resolve: {
+    extensions: ['.js', '.jsx']
+  }
 };
-
-module.exports = common;

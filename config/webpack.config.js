@@ -1,17 +1,55 @@
 'use strict';
 
+const path = require('path');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const { merge } = require('webpack-merge');
-
 const common = require('./webpack.common.js');
-const PATHS = require('./paths');
 
 // Merge webpack configuration files
 const config = merge(common, {
   entry: {
-    popup: PATHS.src + '/popup.js',
-    contentScript: PATHS.src + '/contentScript.js',
-    background: PATHS.src + '/background.js',
+    popup: './src/index.js',
+    background: './src/background/background.js',
+    contentScript: './src/content/contentScript.js'
   },
+  output: {
+    path: path.resolve(__dirname, '../build'),
+    filename: '[name].bundle.js'
+  },
+  module: {
+    rules: [
+      {
+        test: /\.js$/,
+        exclude: /node_modules/,
+        use: {
+          loader: 'babel-loader',
+          options: {
+            presets: ['@babel/preset-env', '@babel/preset-react']
+          }
+        }
+      },
+      {
+        test: /\.css$/,
+        use: [MiniCssExtractPlugin.loader, 'css-loader']
+      },
+      {
+        test: /\.(png|svg|jpg|jpeg|gif)$/i,
+        type: 'asset/resource'
+      }
+    ]
+  },
+  plugins: [
+    new CopyWebpackPlugin({
+      patterns: [
+        { from: 'public', to: '.' }
+      ]
+    }),
+    new MiniCssExtractPlugin()
+  ],
+  resolve: {
+    extensions: ['.js', '.jsx']
+  }
 });
 
 module.exports = config;

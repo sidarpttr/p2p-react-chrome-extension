@@ -1,0 +1,31 @@
+[
+    {
+        "timestamp": 1731611704573,
+        "files": [
+            {
+                "filename": "background.bundle.js",
+                "previous": 5120,
+                "size": 3446,
+                "diff": -1674
+            },
+            {
+                "filename": "contentScript.bundle.js",
+                "previous": 367,
+                "size": 187,
+                "diff": -180
+            },
+            {
+                "filename": "popup.bundle.js",
+                "previous": 259783,
+                "size": 45556,
+                "diff": -214227
+            },
+            {
+                "filename": "popup.html",
+                "previous": 187,
+                "size": 187,
+                "diff": 0
+            }
+        ]
+    }
+]

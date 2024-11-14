@@ -7,4 +7,6 @@
 # misc
 .DS_Store
 
+/src/constants
+
 npm-debug.log*
