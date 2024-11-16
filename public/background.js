@@ -1,8 +1,5 @@
 "use strict";
 
-import { FETCH_ORDERS_URL } from "../constants/constants";
-import { createFetchOrdersPayload } from "../utils/utils";
-
 let storedToken = null;
 
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
@@ -28,14 +25,24 @@ async function makeRequest(sendResponse) {
         sendResponse({ status: "error", message: "No token stored" });
         return;
     }
-    const payload = createFetchOrdersPayload(storedToken);
-    await fetch(FETCH_ORDERS_URL, payload)
-        .then((response) => {
-            if (response.ok) return response.json();
-            return { status: "error", message: "bağlantı kurulamadı" };
-        })
-        .then((data) => sendResponse({ status: "success", data: data }))
-        .catch((error) => {
-            sendResponse({ status: "error", message: error.message });
+
+    try {
+        const response = await fetch("http://192.168.1.170:3000", {
+            method: "GET",
+            headers: {
+                Authorization: `Bearer ${storedToken}`,
+                "Content-Type": "application/json",
+            },
         });
+
+        if (!response.ok) {
+            sendResponse({ status: "error", message: "Failed to fetch data" });
+            return;
+        }
+
+        const data = await response.json();
+        sendResponse({ status: "success", data: data });
+    } catch (error) {
+        sendResponse({ status: "error", message: error.message });
+    }
 }

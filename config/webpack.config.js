@@ -10,8 +10,8 @@ const common = require('./webpack.common.js');
 const config = merge(common, {
   entry: {
     popup: './src/index.js',
-    background: './src/background/background.js',
-    contentScript: './src/content/contentScript.js'
+    background: './public/background.js',
+    contentScript: './public/contentScript.js'
   },
   output: {
     path: path.resolve(__dirname, '../build'),
