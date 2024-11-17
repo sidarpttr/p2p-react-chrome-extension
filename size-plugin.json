@@ -1,1 +1,142 @@
-[{"timestamp":1731707317422,"files":[{"filename":"background.bundle.js","previous":3179,"size":3146,"diff":-33},{"filename":"contentScript.bundle.js","previous":261,"size":261,"diff":0},{"filename":"popup.bundle.js","previous":81286,"size":81845,"diff":559},{"filename":"popup.html","previous":187,"size":187,"diff":0},{"filename":"popup.css","previous":0,"size":418,"diff":418}]},{"timestamp":1731675928055,"files":[{"filename":"background.bundle.js","previous":3446,"size":3179,"diff":-267},{"filename":"contentScript.bundle.js","previous":187,"size":261,"diff":74},{"filename":"popup.bundle.js","previous":45556,"size":81286,"diff":35730},{"filename":"popup.html","previous":187,"size":187,"diff":0}]},{"timestamp":1731611704573,"files":[{"filename":"background.bundle.js","previous":5120,"size":3446,"diff":-1674},{"filename":"contentScript.bundle.js","previous":367,"size":187,"diff":-180},{"filename":"popup.bundle.js","previous":259783,"size":45556,"diff":-214227},{"filename":"popup.html","previous":187,"size":187,"diff":0}]}]
+[
+    {
+        "timestamp": 1731866474417,
+        "files": [
+            {
+                "filename": "background.bundle.js",
+                "previous": 3146,
+                "size": 3148,
+                "diff": 2
+            },
+            {
+                "filename": "contentScript.bundle.js",
+                "previous": 261,
+                "size": 261,
+                "diff": 0
+            },
+            {
+                "filename": "popup.bundle.js",
+                "previous": 81845,
+                "size": 283735,
+                "diff": 201890
+            },
+            {
+                "filename": "popup.html",
+                "previous": 187,
+                "size": 187,
+                "diff": 0
+            },
+            {
+                "filename": "popup.css",
+                "previous": 418,
+                "size": 581,
+                "diff": 163
+            },
+            {
+                "filename": "background.js",
+                "previous": 0,
+                "size": 426,
+                "diff": 426
+            },
+            {
+                "filename": "contentScript.js",
+                "previous": 0,
+                "size": 226,
+                "diff": 226
+            }
+        ]
+    },
+    {
+        "timestamp": 1731707317422,
+        "files": [
+            {
+                "filename": "background.bundle.js",
+                "previous": 3179,
+                "size": 3146,
+                "diff": -33
+            },
+            {
+                "filename": "contentScript.bundle.js",
+                "previous": 261,
+                "size": 261,
+                "diff": 0
+            },
+            {
+                "filename": "popup.bundle.js",
+                "previous": 81286,
+                "size": 81845,
+                "diff": 559
+            },
+            {
+                "filename": "popup.html",
+                "previous": 187,
+                "size": 187,
+                "diff": 0
+            },
+            {
+                "filename": "popup.css",
+                "previous": 0,
+                "size": 418,
+                "diff": 418
+            }
+        ]
+    },
+    {
+        "timestamp": 1731675928055,
+        "files": [
+            {
+                "filename": "background.bundle.js",
+                "previous": 3446,
+                "size": 3179,
+                "diff": -267
+            },
+            {
+                "filename": "contentScript.bundle.js",
+                "previous": 187,
+                "size": 261,
+                "diff": 74
+            },
+            {
+                "filename": "popup.bundle.js",
+                "previous": 45556,
+                "size": 81286,
+                "diff": 35730
+            },
+            {
+                "filename": "popup.html",
+                "previous": 187,
+                "size": 187,
+                "diff": 0
+            }
+        ]
+    },
+    {
+        "timestamp": 1731611704573,
+        "files": [
+            {
+                "filename": "background.bundle.js",
+                "previous": 5120,
+                "size": 3446,
+                "diff": -1674
+            },
+            {
+                "filename": "contentScript.bundle.js",
+                "previous": 367,
+                "size": 187,
+                "diff": -180
+            },
+            {
+                "filename": "popup.bundle.js",
+                "previous": 259783,
+                "size": 45556,
+                "diff": -214227
+            },
+            {
+                "filename": "popup.html",
+                "previous": 187,
+                "size": 187,
+                "diff": 0
+            }
+        ]
+    }
+]

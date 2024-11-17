@@ -9,7 +9,7 @@ class Printify {
     constructor(token) {
         this.token = token;
         this.shops = [];
-        this.oturum = legacySession();
+        this.oturum = modernSession();
         this.base_url = "https://api.printify.com/v1/";
     }
 

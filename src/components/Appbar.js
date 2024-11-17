@@ -1,11 +1,10 @@
 import React, { useState } from "react";
 import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
-import Typography from "@mui/material/Typography";
-import { Box, IconButton, Step, StepLabel, Stepper } from "@mui/material";
-import MenuIcon from "@mui/icons-material/Menu";
+import { Box, Step, StepLabel, Stepper, Tooltip } from "@mui/material";
 import Printify from "../features/printify/repositories/printify";
 import SetTokenDialog from "./SetTokenDialog";
+import PortalLoginForm from "./ePortalLogin";
 
 const steps = ["Printify token", "ePortal giriş"];
 
@@ -14,24 +13,48 @@ const steps = ["Printify token", "ePortal giriş"];
  * @param {Printify} printfy
  * @returns
  */
-const Appbar = ({ printify }) => {
-    const [open, setOpen] = useState(false);
-    const activeStep = printify.token ? 1 : 0;
+const Appbar = ({ printify, portal }) => {
+    //printify token dialogu için
+    const [token_open, setTokenOpen] = useState(false);
 
-    const handleClickOpen = () => {
-        setOpen(true);
+    //eportal login dialogu içiçn
+    const [login_open, setLoginOpen] = useState(false);
+
+    //token ve e portal girişi kontrol için
+    const activeStep = portal.token ? 2 : printify.token ? 1 : 0;
+
+    const token_handleClickOpen = () => {
+        //printify tokeni dialogu için açma fonksiyonu
+        setTokenOpen(true);
     };
 
-    const handleClose = () => {
-        setOpen(false);
+    const token_handleClose = () => {
+        //printify tokeni dialogu için kapatma fonksiyonu
+        setTokenOpen(false);
     };
+
+    const login_handleClickOpen = () => {
+        //eportal login dialogu için açma fonksiyonu
+        setLoginOpen(true);
+    };
+
+    const login_handleClose = () => {
+        //eportal login dialogu için kapatma fonksiyonu
+        setLoginOpen(false);
+    };
+
     return (
         <>
             {_buildAppBar()}
             <SetTokenDialog
-                open={open}
-                onClose={handleClose}
+                open={token_open}
+                onClose={token_handleClose}
                 printify={printify}
+            />
+            <PortalLoginForm
+                open={login_open}
+                onClose={login_handleClose}
+                portal={portal}
             />
         </>
     );
@@ -66,7 +89,9 @@ const Appbar = ({ printify }) => {
                             <StepLabel
                                 onClick={() => {
                                     if (index === 0) {
-                                        handleClickOpen();
+                                        token_handleClickOpen();
+                                    } else if (index === 1) {
+                                        login_handleClickOpen();
                                     }
                                 }}
                             >
@@ -81,12 +106,3 @@ const Appbar = ({ printify }) => {
 };
 
 export default Appbar;
-//<IconButton
-//                        onClick={handleClickOpen}
-//                        edge="start"
-//                        color="inherit"
-//                        aria-label="menu"
-//                    >
-//                        <MenuIcon />
-//                    </IconButton>
-//                    <Typography variant="h5"></Typography>

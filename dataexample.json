@@ -1,54 +1,22 @@
 {
-    "data": {
-        "current_page": 1,
-        "data": [],
-        "first_page_url": "/?page=1",
-        "from": null,
-        "last_page": 1,
-        "last_page_url": "/?page=1",
-        "links": [
-            {
-                "url": null,
-                "label": "&laquo; Previous",
-                "active": false
-            },
-            {
-                "url": "/?page=1",
-                "label": "1",
-                "active": true
-            },
-            {
-                "url": null,
-                "label": "Next &raquo;",
-                "active": false
-            }
-        ],
-        "next_page_url": null,
-        "path": "/",
-        "per_page": 10,
-        "prev_page_url": null,
-        "to": null,
-        "total": 0
-    },
+    "data": "assoscmd=login|logout",
     "status": 200,
-    "statusText": "",
+    "statusText": "OK",
     "headers": {
-        "alt-svc": "h3=\":443\"; ma=86400",
-        "cache-control": "no-cache, private",
-        "cf-cache-status": "DYNAMIC",
-        "cf-ray": "8e40965a698de346-IST",
+        "access-control-allow-credentials": "true",
+        "access-control-allow-origin": "chrome-extension://ajjlpjidhjjbellgnhjjmjfeiokocnbd",
+        "cache-control": "private",
+        "cip": "46.221.177.41:36692",
+        "connection": "keep-alive",
         "content-encoding": "gzip",
-        "content-type": "application/json",
-        "date": "Sun, 17 Nov 2024 14:59:54 GMT",
-        "priority": "u=1,i",
-        "server": "cloudflare",
-        "server-timing": "cfExtPri",
-        "x-ab-test-token": "807631d5-ce64-4479-b6ee-6fa5b3f6faa9",
-        "x-content-type-options": "nosniff",
-        "x-dns-prefetch-control": "off",
-        "x-pfy-correlation-id": "3ac50cf6-d520-41f7-87f4-9ba9da4b54de",
-        "x-ratelimit-limit": "600",
-        "x-ratelimit-remaining": "598",
+        "content-length": "39",
+        "content-type": "application/json;charset=ISO-8859-1",
+        "cteonnt-length": "21",
+        "date": "Sun, 17 Nov 2024 19:24:31 GMT",
+        "server": "nginx/1.19.0",
+        "vary": "Origin",
+        "x-content-type-options": "nosniff, nosniff",
+        "x-powered-by": "Undertow/1",
         "x-xss-protection": "1; mode=block"
     },
     "config": {
@@ -76,10 +44,12 @@
         "env": {},
         "headers": {
             "Accept": "application/json, text/plain, */*",
-            "Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIzN2Q0YmQzMDM1ZmUxMWU5YTgwM2FiN2VlYjNjY2M5NyIsImp0aSI6IjdjM2FkMDBiNzYxMjkyMGEyMmJhYTE5ZTU1MDAwOTY4NmNjYzc4MjJmNjQ4MzU2Zjk1NDBkMTU1OWFmYTMzNTZiZTc1ZGQxZDhhZTI4ODQwIiwiaWF0IjoxNzMxNzc1NjQwLjg5OTQ1MiwibmJmIjoxNzMxNzc1NjQwLjg5OTQ1NSwiZXhwIjoxNzYzMzExNjQwLjg5MTAyOCwic3ViIjoiMjA0OTMyMzMiLCJzY29wZXMiOlsic2hvcHMubWFuYWdlIiwic2hvcHMucmVhZCIsImNhdGFsb2cucmVhZCIsIm9yZGVycy5yZWFkIiwib3JkZXJzLndyaXRlIiwicHJvZHVjdHMucmVhZCIsInByb2R1Y3RzLndyaXRlIiwid2ViaG9va3MucmVhZCIsIndlYmhvb2tzLndyaXRlIiwidXBsb2Fkcy5yZWFkIiwidXBsb2Fkcy53cml0ZSIsInByaW50X3Byb3ZpZGVycy5yZWFkIiwidXNlci5pbmZvIl19.AbkNtAgSiY1UPIE2XhjIqzsxZx4q3R93m2nGBIHjxx38WkKOcQ08w4YH2bhwXA8W9Cs_bdgW8awazqfH0FU"
+            "Content-Type": "application/json"
         },
-        "method": "get",
-        "url": "https://api.printify.com/v1/shops/18912567/orders.json"
+        "httpsAgent": {},
+        "method": "post",
+        "url": "https://earsivportaltest.efatura.gov.tr/earsiv-services/assos-login",
+        "data": "{\"assoscmd\":\"login\",\"rtype\":\"json\",\"userid\":\"123\",\"sifre\":\"123\",\"sifre2\":\"123\",\"parola\":\"1\"}"
     },
     "request": {}
 }

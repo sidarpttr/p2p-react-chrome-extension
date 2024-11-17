@@ -32,6 +32,7 @@ const OrderList = ({ printify, shop }) => {
             try {
                 const response = await printify.getOrders(shop);
                 setOrders(response);
+                console.log(response);
             } catch (error) {
                 setError(error);
             } finally {
@@ -48,35 +49,44 @@ const OrderList = ({ printify, shop }) => {
             ) : error ? (
                 <ErrorMessage error={error} />
             ) : Array.isArray(orders) ? (
-                <List style={{ width: "100%" }}>
-                    {orders.map((order) => (
-                        <ListItem
-                            key={order.id}
-                            style={{ marginBottom: "20px" }}
-                        >
-                            <Card
-                                style={{
-                                    width: "100%",
-                                    backgroundColor: "#111",
-                                    color: "white",
-                                }}
+                <>
+                    <Typography variant="h6">Orders</Typography>
+                    <List style={{ width: "100%" }}>
+                        {orders.map((order) => (
+                            <ListItem
+                                key={order.id}
+                                style={{ marginBottom: "20px" }}
                             >
-                                <CardContent>
-                                    <Typography variant="body1" align="left">
-                                        {order.first_name +
-                                            " " +
-                                            order.last_name}
-                                    </Typography>
-                                    <Typography variant="body2" align="left">
-                                        {order.first_name +
-                                            " " +
-                                            order.last_name}
-                                    </Typography>
-                                </CardContent>
-                            </Card>
-                        </ListItem>
-                    ))}
-                </List>
+                                <Card
+                                    style={{
+                                        width: "100%",
+                                        backgroundColor: "#111",
+                                        color: "white",
+                                    }}
+                                >
+                                    <CardContent>
+                                        <Typography
+                                            variant="body1"
+                                            align="left"
+                                        >
+                                            {order.first_name +
+                                                " " +
+                                                order.last_name}
+                                        </Typography>
+                                        <Typography
+                                            variant="body2"
+                                            align="left"
+                                        >
+                                            {order.first_name +
+                                                " " +
+                                                order.last_name}
+                                        </Typography>
+                                    </CardContent>
+                                </Card>
+                            </ListItem>
+                        ))}
+                    </List>
+                </>
             ) : (
                 <InfoMessage message={"no orders"} />
             )}

@@ -1,8 +1,9 @@
 const { v4: uuidv4 } = require("uuid");
-const { Komut, Komutlar } = require("../../models/portal/komutlar");
+const { Komut, Komutlar } = require("../models/komutlar");
 const { fatura_ver } = require("./fatura_ver");
 const moment = require("moment-timezone");
-const { legacySession } = require("./session");
+const { legacySession, modernSession } = require("./../../session");
+const qs = require("qs");
 
 class eArsivPortal {
     /**
@@ -11,10 +12,16 @@ class eArsivPortal {
      * @param {String} sifre
      * @param {boolean} test_modu
      */
-    constructor(kullanici_kodu = "33333315", sifre = "1", test_modu = true) {
+    constructor(
+        kullanici_kodu = "33333315",
+        sifre = "1",
+        test_modu = true,
+        token
+    ) {
         this.kullanici_kodu = kullanici_kodu;
         this.sifre = sifre;
         this.test_modu = test_modu;
+        this.token = token;
 
         const apiler = {
             YAYIN: "https://earsivportal.efatura.gov.tr",
@@ -22,11 +29,17 @@ class eArsivPortal {
         };
 
         this.url = apiler[test_modu ? "TEST" : "YAYIN"];
-        this.oturum = legacySession();
+        this.oturum = modernSession();
 
-        this.komutlar = Komutlar();
-        this.token = null;
-        this.giris_yap();
+        this.komutlar = new Komutlar();
+    }
+
+    setKullaniciKodu(kullanici_kodu) {
+        this.kullanici_kodu = kullanici_kodu;
+    }
+
+    setSifre(sifre) {
+        this.sifre = sifre;
     }
 
     __istek_ayristir(response, data) {
@@ -37,9 +50,8 @@ class eArsivPortal {
                 throw new Error("Oturum zamanaşımına uğradı");
             }
 
-            throw new Error("eArsivPortalHatasi", errorMessage);
+            throw new Error(errorMessage);
         }
-
         return data;
     }
 
@@ -47,21 +59,21 @@ class eArsivPortal {
         try {
             const response = await this.oturum.post(
                 `${this.url}/earsiv-services/assos-login`,
-                {
+                qs.stringify({
                     assoscmd: this.test_modu ? "login" : "anologin",
                     rtype: "json",
                     userid: this.kullanici_kodu,
                     sifre: this.sifre,
                     sifre2: this.sifre,
                     parola: "1",
-                }
+                })
             );
 
             const data = response.data;
             this.token = this.__istek_ayristir(response, data).token;
             return this.token !== null;
         } catch (error) {
-            throw new Error("Giriş yapılamadı", error);
+            throw error;
         }
     }
 
@@ -72,11 +84,11 @@ class eArsivPortal {
         try {
             const response = await this.oturum.post(
                 `${this.url}/earsiv-services/assos-login`,
-                {
+                qs.stringify({
                     assoscmd: "logout",
                     rtype: "json",
                     token: self.token,
-                }
+                })
             );
 
             if (response.status !== 200) {
@@ -103,13 +115,13 @@ class eArsivPortal {
         try {
             const response = await self.oturum.post(
                 `${this.url}/earsiv-services/dispatch`,
-                {
+                qs.stringify({
                     cmd: komut.cmd,
                     callid: uuidv4(),
                     pageName: komut.sayfa,
                     token: this.token,
                     jp: JSON.stringify(jp),
-                }
+                })
             );
 
             const data = response.data;
@@ -131,7 +143,7 @@ class eArsivPortal {
         try {
             const response = await this.__kod_calistir(
                 self.komutlar.MERNISTEN_BILGILERI_GETIR,
-                { vkn_veya_tckn }
+                qs.stringify({ vkn_veya_tckn })
             );
 
             const data = response.get("data");
@@ -192,3 +204,5 @@ class eArsivPortal {
         );
     }
 }
+
+export default eArsivPortal;

@@ -1,37 +1,40 @@
+const https = require("https");
 const axios = require("axios");
 
+
 class CustomHttpAdapter {
-    constructor(sslContext = null) {
-        this.sslContext = sslContext;
-        this.instance = axios.create({
-            httpsAgent: sslContext ? new (require("https").Agent)(sslContext) : undefined,
-        });
+    constructor(ctx) {
+        this.ctx = ctx;
+    }
+
+    request(config) {
+        config.httpsAgent = new https.Agent(this.ctx);
+        return axios.request(config);
     }
 }
 
 function legacySession() {
-    let sslContext = null;
-    if (typeof window === "undefined") {
-        // Node.js ortamında çalışıyorsak SSL/TLS seçeneklerini kullan
-        sslContext = {
-            secureOptions: require("https").constants.SSL_OP_LEGACY_SERVER_CONNECT,
-        };
-    }
+    const ctx = {
+        secureOptions: 0x4 // OP_LEGACY_SERVER_CONNECT
+    };
 
-    return new CustomHttpAdapter(sslContext).instance;
+    const instance = axios.create({
+        httpsAgent: new https.Agent(ctx)
+    });
+
+    return instance;
 }
 
 function modernSession() {
-    let sslContext = null;
-    if (typeof window === "undefined") {
-        // Node.js ortamında çalışıyorsak SSL/TLS seçeneklerini kullan
-        sslContext = {
-            secureOptions:
-                require("https").constants.SSL_OP_NO_SSLv2 | require("https").constants.SSL_OP_NO_SSLv3,
-        };
-    }
+    const agent = new https.Agent({
+        rejectUnauthorized: true, // Default SSL context
+    });
 
-    return new CustomHttpAdapter(sslContext).instance;
+    const instance = axios.create({
+        httpsAgent: agent,
+    });
+
+    return instance;
 }
 
 module.exports = { legacySession, modernSession };

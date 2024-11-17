@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Box, CssBaseline } from "@mui/material";
+import { Box, CssBaseline, Typography } from "@mui/material";
 import { ThemeProvider } from "@mui/material/styles";
 import Appbar from "./Appbar";
 import Printify from "../features/printify/repositories/printify";
@@ -8,25 +8,30 @@ import { Router } from "react-chrome-extension-router";
 import Skeletons from "./Skeletons";
 import ListShops from "./ListShops";
 import ErrorMessage from "./Error";
+import eArsivPortal from "../features/portal/services/portal";
 
 const Popup = () => {
     const [content, setContent] = useState([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
+
     const printify_token = localStorage.getItem("printify_token") || "";
+    const portal_token = localStorage.getItem("portal_token") || "";
+
     const printify = new Printify(printify_token);
+    const portal = new eArsivPortal(portal_token);
 
     useEffect(() => {
         async function initializePrintify() {
+            setLoading(true);
             try {
                 if (printify) {
-                    setLoading(true);
                     await printify.init();
                     setContent(printify.shops);
-                    setLoading(false);
                 }
             } catch (error) {
-                setError(error.message);
+                setError(error);
+            } finally {
                 setLoading(false);
             }
         }
@@ -37,7 +42,7 @@ const Popup = () => {
     return (
         <ThemeProvider theme={theme}>
             <CssBaseline />
-            <Appbar printify={printify} />
+            <Appbar printify={printify} portal={portal} />
             <Box
                 display="flex"
                 justifyContent="initial"
@@ -61,28 +66,3 @@ const Popup = () => {
 };
 
 export default Popup;
-
-//<BrowserRouter
-//                future={{
-//                    v7_startTransition: true,
-//                }}
-//            >
-//                <Container
-//                    maxWidth={false}
-//                    disableGutters
-//                    style={{
-//                        backgroundColor: theme.palette.background.default,
-//                        minHeight: "100vh",
-//                    }}
-//                >
-//                    <Box
-//                        display="flex"
-//                        justifyContent="center"
-//                        alignItems="center"
-//                        flexDirection="column"
-//                        style={{ minHeight: "calc(100vh - 64px)" }}
-//                    >
-//                        <AppRoutes content={content} loading={loading} />
-//                    </Box>
-//                </Container>
-//            </BrowserRouter>
