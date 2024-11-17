@@ -1,7 +1,7 @@
 "use strict";
 
-const path = require("path");
 const SizePlugin = require("size-plugin");
+const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 const CopyWebpackPlugin = require("copy-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
@@ -54,6 +54,7 @@ module.exports = {
         ],
     },
     plugins: [
+        new CleanWebpackPlugin(),
         new SizePlugin(),
         new CopyWebpackPlugin({
             patterns: [{ from: PATHS.public, to: "." }],
@@ -62,5 +63,13 @@ module.exports = {
     ],
     resolve: {
         extensions: [".js", ".jsx"],
+        fallback: {
+            https: require.resolve("https-browserify"),
+            http: require.resolve("stream-http"),
+            stream: require.resolve("stream-browserify"),
+            buffer: require.resolve("buffer/"),
+            crypto: require.resolve("crypto-browserify"),
+            url: require.resolve("url/"),
+        },
     },
 };

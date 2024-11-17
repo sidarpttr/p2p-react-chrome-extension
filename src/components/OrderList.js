@@ -1,54 +1,87 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
-    Alert,
+    AppBar,
+    Box,
     Card,
     CardContent,
+    IconButton,
     List,
     ListItem,
+    Toolbar,
     Typography,
 } from "@mui/material";
-import { DataObjectRounded } from "@mui/icons-material";
+import Skeletons from "./Skeletons";
+import ErrorMessage from "./Error";
+import Printify from "../features/printify/repositories/printify";
+import InfoMessage from "./Info";
+import GoBackBar from "./goBackFab";
 
-const OrderList = ({ orders, error }) => {
-    if (error) {
-        return (
-            <Alert severity="error" style={{ marginTop: "20px" }}>
-                {error}
-            </Alert>
-        );
-    }
-
-    if (orders.length === 0) {
-        return (
-            <Alert severity="info" icon={<DataObjectRounded />}>
-                Henüz satış yok.
-            </Alert>
-        );
-    }
+/**
+ *
+ * @param {Printify} printify
+ * @param {Object} shop
+ * @returns
+ */
+const OrderList = ({ printify, shop }) => {
+    const [orders, setOrders] = useState([]);
+    const [error, setError] = useState(null);
+    const [loading, setLoading] = useState(false);
+    useEffect(() => {
+        setLoading(true);
+        async function getOrders() {
+            try {
+                const response = await printify.getOrders(shop);
+                setOrders(response);
+            } catch (error) {
+                setError(error);
+            } finally {
+                setLoading(false);
+            }
+        }
+        getOrders();
+    }, []);
 
     return (
-        <List style={{width:"100%"}}>
-            {orders.map((order) => (
-                <ListItem key={order.id} style={{ marginBottom: "20px"}}>
-                    <Card
-                        style={{
-                            width: "100%",
-                            backgroundColor: "#111",
-                            color: "white",
-                        }}
-                    >
-                        <CardContent>
-                            <Typography variant="body1" align="left">
-                                {order.first_name + " " + order.last_name}
-                            </Typography>
-                            <Typography variant="body2" align="left">
-                                {order.first_name + " " + order.last_name}
-                            </Typography>
-                        </CardContent>
-                    </Card>
-                </ListItem>
-            ))}
-        </List>
+        <>
+            {loading ? (
+                <Skeletons />
+            ) : error ? (
+                <ErrorMessage error={error} />
+            ) : Array.isArray(orders) ? (
+                <List style={{ width: "100%" }}>
+                    {orders.map((order) => (
+                        <ListItem
+                            key={order.id}
+                            style={{ marginBottom: "20px" }}
+                        >
+                            <Card
+                                style={{
+                                    width: "100%",
+                                    backgroundColor: "#111",
+                                    color: "white",
+                                }}
+                            >
+                                <CardContent>
+                                    <Typography variant="body1" align="left">
+                                        {order.first_name +
+                                            " " +
+                                            order.last_name}
+                                    </Typography>
+                                    <Typography variant="body2" align="left">
+                                        {order.first_name +
+                                            " " +
+                                            order.last_name}
+                                    </Typography>
+                                </CardContent>
+                            </Card>
+                        </ListItem>
+                    ))}
+                </List>
+            ) : (
+                <InfoMessage message={"no orders"} />
+            )}
+            <GoBackBar />
+        </>
     );
 };
 

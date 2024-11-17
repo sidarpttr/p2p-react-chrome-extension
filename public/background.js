@@ -27,7 +27,7 @@ async function makeRequest(sendResponse) {
     }
 
     try {
-        const response = await fetch("http://192.168.1.170:3000", {
+        const response = await fetch("http://192.168.158.252:3000", {
             method: "GET",
             headers: {
                 Authorization: `Bearer ${storedToken}`,

@@ -1,102 +1,88 @@
 import React, { useState, useEffect } from "react";
-import { Container, Box, Skeleton } from "@mui/material";
+import { Box, CssBaseline } from "@mui/material";
+import { ThemeProvider } from "@mui/material/styles";
 import Appbar from "./Appbar";
-import OrderList from "./OrderList";
+import Printify from "../features/printify/repositories/printify";
+import theme from "../theme";
+import { Router } from "react-chrome-extension-router";
+import Skeletons from "./Skeletons";
+import ListShops from "./ListShops";
+import ErrorMessage from "./Error";
 
 const Popup = () => {
     const [content, setContent] = useState([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
-
-    function getOrderModels(data) {
-        return data.map((order) => ({
-            id: order.id,
-            first_name: order.address_to.first_name,
-            last_name: order.address_to.last_name,
-            email: order.address_to.email,
-            phone: order.address_to.phone,
-            country: order.address_to.country,
-            company: order.address_to.company,
-            total_price: order.total_price,
-            items: order.line_items.map((item) => ({
-                product_id: item.product_id,
-                cost: item.cost,
-            })),
-        }));
-    }
-
-    const fetchData = () => {
-        setLoading(true);
-        setError(null);
-        chrome.runtime.sendMessage({ action: "makeRequest" }, (response) => {
-            setLoading(false);
-            if (response.status === "success") {
-                const jsonData = response.data.data;
-                const orderModels = getOrderModels(jsonData);
-                setContent(orderModels);
-            } else {
-                setError(response.message);
-            }
-        });
-    };
+    const printify_token = localStorage.getItem("printify_token") || "";
+    const printify = new Printify(printify_token);
 
     useEffect(() => {
-        fetchData();
+        async function initializePrintify() {
+            try {
+                if (printify) {
+                    setLoading(true);
+                    await printify.init();
+                    setContent(printify.shops);
+                    setLoading(false);
+                }
+            } catch (error) {
+                setError(error.message);
+                setLoading(false);
+            }
+        }
+
+        initializePrintify();
     }, []);
 
     return (
-        <Container
-            maxWidth={false}
-            disableGutters
-            style={{ backgroundColor: "#1f1f1f", minHeight: "100vh" }}
-        >
-            <Appbar />
+        <ThemeProvider theme={theme}>
+            <CssBaseline />
+            <Appbar printify={printify} />
             <Box
                 display="flex"
-                justifyContent="center"
+                justifyContent="initial"
                 alignItems="center"
+                paddingTop={5}
                 flexDirection="column"
                 style={{ minHeight: "calc(100vh - 64px)" }}
             >
-                {loading ? (
-                    _buildSkeletons()
-                ) : (
-                    <OrderList orders={content} error={error} />
-                )}
+                <Router>
+                    {loading ? (
+                        <Skeletons />
+                    ) : error ? (
+                        <ErrorMessage error={error} />
+                    ) : (
+                        <ListShops shops={content} printify={printify} />
+                    )}
+                </Router>
             </Box>
-        </Container>
+        </ThemeProvider>
     );
-
-    //build error mesage
-    function _buildErrorMessage() {}
-
-    function _buildSkeletons() {
-        return (
-            <>
-                <Skeleton
-                    variant="rounded"
-                    width={300}
-                    height={60}
-                    animation="wave"
-                    sx={{ bgcolor: "grey.800" }}
-                />
-                <Skeleton
-                    variant="rounded"
-                    width={300}
-                    height={60}
-                    animation="wave"
-                    sx={{ bgcolor: "grey.800", marginTop: 2 }}
-                />
-                <Skeleton
-                    variant="rounded"
-                    width={300}
-                    height={60}
-                    animation="wave"
-                    sx={{ bgcolor: "grey.800", marginTop: 2 }}
-                />
-            </>
-        );
-    }
 };
 
 export default Popup;
+
+//<BrowserRouter
+//                future={{
+//                    v7_startTransition: true,
+//                }}
+//            >
+//                <Container
+//                    maxWidth={false}
+//                    disableGutters
+//                    style={{
+//                        backgroundColor: theme.palette.background.default,
+//                        minHeight: "100vh",
+//                    }}
+//                >
+//                    <Box
+//                        display="flex"
+//                        justifyContent="center"
+//                        alignItems="center"
+//                        flexDirection="column"
+//                        style={{ minHeight: "calc(100vh - 64px)" }}
+//                    >
+//                        <AppRoutes content={content} loading={loading} />
+//                    </Box>
+//                </Container>
+//            </BrowserRouter>

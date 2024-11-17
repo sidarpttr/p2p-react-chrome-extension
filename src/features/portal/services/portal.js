@@ -1,9 +1,8 @@
-const https = require("https");
-const axios = require("axios");
 const { v4: uuidv4 } = require("uuid");
-const { Komut, Komutlar } = require("./komutlar");
+const { Komut, Komutlar } = require("../../models/portal/komutlar");
 const { fatura_ver } = require("./fatura_ver");
 const moment = require("moment-timezone");
+const { legacySession } = require("./session");
 
 class eArsivPortal {
     /**
@@ -23,11 +22,7 @@ class eArsivPortal {
         };
 
         this.url = apiler[test_modu ? "TEST" : "YAYIN"];
-        this.oturum = axios.create({
-            httpsAgent: new https.Agent({
-                secureOptions: https.constants.SSL_OP_LEGACY_SERVER_CONNECT,
-            }),
-        });
+        this.oturum = legacySession();
 
         this.komutlar = Komutlar();
         this.token = null;

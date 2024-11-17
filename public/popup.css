@@ -15,11 +15,24 @@ html {
 }
 
 body {
-    width: 400px;
+    width:400px;
     height: 450px;
     background-color: #111;
 }
+body::-webkit-scrollbar {
+    width: 5px; /* Kaydırma çubuğunun genişliği */
+}
 
+body::-webkit-scrollbar-track {
+    background: #333; /* Kaydırma çubuğu arka plan rengi */
+    border-radius: 10px; /* Kaydırma çubuğu köşe yuvarlama */
+}
+
+body::-webkit-scrollbar-thumb {
+    background-color: #9EDF9C; /* Kaydırma çubuğu rengi */
+    border-radius: 10px; /* Kaydırma çubuğu köşe yuvarlama */
+    border: 1px solid #333; /* Kaydırma çubuğu kenarlığı */
+}
 .app {
     height: 100%;
     display: flex;
