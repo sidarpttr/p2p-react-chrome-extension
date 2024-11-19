@@ -9,6 +9,8 @@ P2p Extension, Printify'daki siparişlerinizi kolayca ePortal'da faturalandırma
 -   **Güvenli Kimlik Doğrulama**: Token kullanarak kimlik doğrulama.
 -   **Mağazalar**: Hesabınıza bağlı mağazaları görüntüler.
 -   **Siparişler**: Mağazalarınızdaki siparişleri alır.
+-   **Faturalandırma**: Siparişlerinizi faturalandırarar ePortal'a gönderir.
+
 
 ## Kurulum
 
