@@ -1,3 +1,5 @@
+import Order from "../../printify/models/order";
+
 const { v4: uuidv4 } = require("uuid");
 const { Komut, Komutlar } = require("../models/komutlar");
 const { fatura_ver } = require("./fatura_ver");
@@ -120,7 +122,7 @@ class eArsivPortal {
                     callid: uuidv4(),
                     pageName: komut.sayfa,
                     token: this.token,
-                    jp: JSON.stringify(jp),
+                    jp: jp,
                 })
             );
 
@@ -135,6 +137,15 @@ class eArsivPortal {
         }
     }
 
+    async bilgilerim() {
+        const response = await this.__kod_calistir(
+            this.komutlar.KULLANICI_BILGILERI_GETIR,
+            {}
+        );
+        const data = response.data;
+        return this.__nesne_ver("Bilgilerim", data);
+    }
+
     /**
      *
      * @param {String} vkn_veya_tckn
@@ -143,10 +154,10 @@ class eArsivPortal {
         try {
             const response = await this.__kod_calistir(
                 self.komutlar.MERNISTEN_BILGILERI_GETIR,
-                qs.stringify({ vkn_veya_tckn })
+                { vknTcknn: vkn_veya_tckn }
             );
 
-            const data = response.get("data");
+            const data = response.data;
             return this.__nesne_ver("Kisi", data);
         } catch (error) {
             const veri = {
@@ -165,43 +176,39 @@ class eArsivPortal {
 
     /**
      *
-     * @param {String} tarih
-     * @param {String} saat
-     * @param {String} vkn_veya_tckn
-     * @param {String} ad
-     * @param {String} soyad
-     * @param {String} unvan
-     * @param {String} vergi_dairesi
-     * @param {String} urun_adi
-     * @param {Number|Float} fiyat
-     * @param {String} fatura_notu
+     * @param {Order} order
      */
-    fatura_olustur(
-        tarih = "16/11/2024",
-        saat = "10:53:13",
-        vkn_veya_tckn = "11111111111",
-        ad = "sidar",
-        soyad = "adiguzel",
-        unvan = "",
-        vergi_dairesi = "",
-        urun_adi = "Muhtelif Oyuncak",
-        fiyat = 100,
-        fatura_notu = ""
-    ) {
-        const kisi_bilgi = self.kisi_getir(vkn_veya_tckn);
-        const currentDate = moment().tz("Turkey").format("DD/MM/YYYY");
+    async fatura_olustur(order) {
+        const kisi_bilgi = await this.kisi_getir(order.vknTcknn);
         const fatura = fatura_ver(
-            tarih || currentDate,
-            saat,
-            vkn_veya_tckn,
-            kisi_bilgi.adi,
-            kisi_bilgi.soyadi,
-            kisi_bilgi.unvan,
-            kisi_bilgi.vergiDairesi,
-            urun_adi,
-            fiyat,
-            fatura_notu
+            order.tarih || new Date().toLocaleDateString("tr-TR"),
+            order.saat,
+            order.vkn_veya_tckn,
+            kisi_bilgi.adi || order.ad,
+            kisi_bilgi.soyadi || order.soyad,
+            kisi_bilgi.unvan || order.unvan,
+            kisi_bilgi.vergiDairesi || order.vergiDairesi,
+            order.urun_adi,
+            order.fiyat,
+            order.fatura_notu,
+            order.para_birimi,
+            order.dovzTLkur
         );
+
+        while (true) {
+            const response = await this.__kod_calistir(
+                this.komutlar.FATURA_OLUSTUR,
+                fatura
+            );
+            var ettn = null;
+            if (
+                response.data.includes("Faturanız başarıyla oluşturulmuştur.")
+            ) {
+                ettn = fatura.faturaUuid;
+                break;
+            }
+            return this.__nesne_ver("FaturaOlustur", { ettn });
+        }
     }
 }
 

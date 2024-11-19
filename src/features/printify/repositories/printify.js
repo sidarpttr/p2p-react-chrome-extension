@@ -1,3 +1,4 @@
+import axios from "axios";
 import { legacySession, modernSession } from "../../session";
 import { OturumSonlandi } from "../models/hatalar";
 
@@ -57,16 +58,21 @@ class Printify {
         }
 
         try {
-            const response = await this.oturum.get(
-                `${this.base_url}shops/${id}/orders.json`,
-                {
-                    headers: {
-                        Authorization: `Bearer ${this.token}`,
-                    },
-                }
+            //const response = await this.oturum.get(
+            //    `${this.base_url}shops/${id}/orders.json`,
+            //    {
+            //        headers: {
+            //            Authorization: `Bearer ${this.token}`,
+            //        },
+            //    }
+            //);
+
+            const response = await axios.get(
+                `http://192.168.225.252:3000/shops/${id}/orders.json`
             );
 
-            return JSON.stringify(response.data.data);
+            //throw JSON.stringify(response.data.data);
+            return response.data.data;
         } catch (error) {
             throw new Error(error);
         }

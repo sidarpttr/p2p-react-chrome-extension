@@ -1,20 +1,19 @@
-import React, { useEffect, useState } from "react";
+import React, { Suspense, useEffect, useState } from "react";
 import {
-    AppBar,
     Box,
     Card,
     CardContent,
+    Chip,
+    Divider,
     IconButton,
-    List,
-    ListItem,
-    Toolbar,
     Typography,
 } from "@mui/material";
 import Skeletons from "./Skeletons";
 import ErrorMessage from "./Error";
 import Printify from "../features/printify/repositories/printify";
-import InfoMessage from "./Info";
-import GoBackBar from "./goBackFab";
+import Order from "../features/printify/models/order";
+import { NavigateNext } from "@mui/icons-material";
+import GoBackFab from "./goBackFab";
 
 /**
  *
@@ -25,74 +24,75 @@ import GoBackBar from "./goBackFab";
 const OrderList = ({ printify, shop }) => {
     const [orders, setOrders] = useState([]);
     const [error, setError] = useState(null);
-    const [loading, setLoading] = useState(false);
     useEffect(() => {
-        setLoading(true);
         async function getOrders() {
             try {
                 const response = await printify.getOrders(shop);
-                setOrders(response);
-                console.log(response);
+                setOrders(Order.toOrdersList(response));
             } catch (error) {
+                console.log(error);
                 setError(error);
-            } finally {
-                setLoading(false);
             }
         }
         getOrders();
-    }, []);
+    }, [shop]);
 
     return (
         <>
-            {loading ? (
-                <Skeletons />
-            ) : error ? (
-                <ErrorMessage error={error} />
-            ) : Array.isArray(orders) ? (
-                <>
-                    <Typography variant="h6">Orders</Typography>
-                    <List style={{ width: "100%" }}>
-                        {orders.map((order) => (
-                            <ListItem
-                                key={order.id}
-                                style={{ marginBottom: "20px" }}
-                            >
-                                <Card
-                                    style={{
-                                        width: "100%",
-                                        backgroundColor: "#111",
-                                        color: "white",
-                                    }}
-                                >
-                                    <CardContent>
-                                        <Typography
-                                            variant="body1"
-                                            align="left"
-                                        >
-                                            {order.first_name +
-                                                " " +
-                                                order.last_name}
-                                        </Typography>
-                                        <Typography
-                                            variant="body2"
-                                            align="left"
-                                        >
-                                            {order.first_name +
-                                                " " +
-                                                order.last_name}
-                                        </Typography>
-                                    </CardContent>
-                                </Card>
-                            </ListItem>
-                        ))}
-                    </List>
-                </>
-            ) : (
-                <InfoMessage message={"no orders"} />
-            )}
-            <GoBackBar />
+            <Typography variant="h5">{shop.title}</Typography>
+            <Suspense fallback={<Skeletons />}>
+                {error
+                    ? ErrorMessage(error)
+                    : orders.map((order) => (
+                          <OrderListItem order={order} key={order.id} />
+                      ))}
+            </Suspense>
+            <GoBackFab />
         </>
     );
 };
 
 export default OrderList;
+
+/**
+ *
+ * @param {Order} order
+ * @returns
+ */
+const OrderListItem = ({ order }) => {
+    return (
+        <Card
+            sx={{
+                width: "80%",
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
+                backgroundColor: "#222",
+                marginTop: 1,
+                marginBottom: 1,
+            }}
+        >
+            <Box sx={{ display: "flex", flexDirection: "column", flex: 1 }}>
+                <CardContent sx={{ flex: "1 0 auto" }}>
+                    <Typography variant="h6" component="div">
+                        {order.ad + " " + order.soyad}
+                    </Typography>
+                    <Typography
+                        variant="subtitle2"
+                        component="div"
+                        sx={{ color: "text.secondary" }}
+                    >
+                        {order.urun_adi + ` $${order.fiyat}`}
+                    </Typography>
+                    <Chip label={order.tarih} />
+                </CardContent>
+            </Box>
+            <Divider orientation="vertical" flexItem />
+            <Box sx={{ padding: 1 }}>
+                <IconButton>
+                    <NavigateNext />
+                </IconButton>
+            </Box>
+        </Card>
+    );
+};

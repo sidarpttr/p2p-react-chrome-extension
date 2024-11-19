@@ -16,7 +16,7 @@ const ListShops = ({ printify, shops }) => {
         <>
             <Typography variant="h6">Shops</Typography>
             <List sx={{ width: "80%" }}>
-                {shops.map((shop, index) => (
+                {shops.map((shop) => (
                     <React.Fragment key={shop.id}>
                         <ListItem
                             sx={{

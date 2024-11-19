@@ -24,7 +24,9 @@ export function fatura_ver(
     vergi_dairesi = "",
     urun_adi = "Muhtelif Oyuncak",
     fiyat = 100,
-    fatura_notu = ""
+    fatura_notu = "",
+    para_birimi = "TRY",
+    dovzTLkur = "0"
 ) {
     const matrah = fiyat / 1.2; // %20
     const kdv = fiyat - matrah;
@@ -34,8 +36,8 @@ export function fatura_ver(
         belgeNumarasi: "",
         faturaTarihi: tarih,
         saat: saat,
-        paraBirimi: "TRY",
-        dovzTLkur: "0",
+        paraBirimi: para_birimi,
+        dovzTLkur: dovzTLkur,
         faturaTipi: "SATIS",
         hangiTip: "5000/30000",
         vknTckn: vkn_veya_tckn,
