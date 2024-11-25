@@ -1,9 +1,10 @@
-import React from "react";
+import React, { useContext } from "react";
 import { List, ListItem, ListItemText, Typography } from "@mui/material";
 import theme from "../theme";
 import { goTo } from "react-chrome-extension-router";
 import OrderList from "./OrderList";
 import Printify from "../features/printify/repositories/printify";
+import { AppContext } from "./popup";
 
 /**
  *
@@ -11,12 +12,16 @@ import Printify from "../features/printify/repositories/printify";
  * @param {Object} shops
  * @returns
  */
-const ListShops = ({ printify, shops }) => {
+const ListShops = () => {
+    const { state, setState } = useContext(AppContext);
+    if (state == null) {
+        return;
+    }
     return (
         <>
             <Typography variant="h6">Shops</Typography>
             <List sx={{ width: "80%" }}>
-                {shops.map((shop) => (
+                {state.printify.shops.map((shop) => (
                     <React.Fragment key={shop.id}>
                         <ListItem
                             sx={{
@@ -26,7 +31,7 @@ const ListShops = ({ printify, shops }) => {
                                 marginBottom: 2,
                             }}
                             onClick={() => {
-                                goTo(OrderList, { printify, shop });
+                                goTo(OrderList, { shop });
                             }}
                         >
                             <ListItemText

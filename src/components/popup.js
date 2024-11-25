@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-import { Box, CssBaseline, Typography } from "@mui/material";
+import React, { useEffect, useContext, useState, createContext } from "react";
+import { Box, CssBaseline } from "@mui/material";
 import { ThemeProvider } from "@mui/material/styles";
 import Appbar from "./Appbar";
 import Printify from "../features/printify/repositories/printify";
@@ -8,41 +8,58 @@ import { Router } from "react-chrome-extension-router";
 import Skeletons from "./Skeletons";
 import ListShops from "./ListShops";
 import ErrorMessage from "./Error";
-import eArsivPortal from "../features/portal/services/portal";
+import eArsivPortal from "../features/portal/services/portal.js";
+import { PrintifyHatasi } from "../features/printify/models/hatalar.js";
 
-const Popup = () => {
-    const [content, setContent] = useState([]);
-    const [loading, setLoading] = useState(false);
-    const [error, setError] = useState(null);
+export const AppContext = createContext();
 
+export const AppProvider = ({ children }) => {
     const printify_token = localStorage.getItem("printify_token") || "";
     const portal_token = localStorage.getItem("portal_token") || "";
 
     const printify = new Printify(printify_token);
     const portal = new eArsivPortal(portal_token);
+    const [state, setState] = useState({
+        printify,
+        portal,
+    });
+
+    return (
+        <AppContext.Provider value={{ state, setState }}>
+            {children}
+        </AppContext.Provider>
+    );
+};
+
+const Popup = () => {
+    const { state, setState } = useContext(AppContext);
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState(null);
 
     useEffect(() => {
-        async function initializePrintify() {
+        async function initPrintify() {
             setLoading(true);
             try {
-                if (printify) {
-                    await printify.init();
-                    setContent(printify.shops);
+                if (state.printify) {
+                    await state.printify.init();
                 }
             } catch (error) {
-                setError(error);
+                setError(
+                    new PrintifyHatasi(
+                        `Magazalar yüklenirken bir sorun oluştu: ${error.message}`
+                    )
+                );
             } finally {
                 setLoading(false);
             }
         }
-
-        initializePrintify();
-    }, []);
+        initPrintify();
+    },[]);
 
     return (
         <ThemeProvider theme={theme}>
             <CssBaseline />
-            <Appbar printify={printify} portal={portal} />
+            <Appbar />
             <Box
                 display="flex"
                 justifyContent="initial"
@@ -57,7 +74,7 @@ const Popup = () => {
                     ) : error ? (
                         <ErrorMessage error={error} />
                     ) : (
-                        <ListShops shops={content} printify={printify} />
+                        <ListShops />
                     )}
                 </Router>
             </Box>

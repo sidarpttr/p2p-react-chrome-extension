@@ -1,10 +1,15 @@
+import Order from "../models/order";
 import Printify from "../repositories/printify";
 
 class PrintifyApiService {
-    constructor() {
-        this.printify = new Printify();
-    }
 
+    /**
+     * 
+     * @param {Order} order 
+     */
+    generateInvoiceFromOrder(order){
+        
+    }
     
 
 }
