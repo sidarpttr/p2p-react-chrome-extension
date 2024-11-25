@@ -68,7 +68,7 @@ class Printify {
             //);
 
             const response = await axios.get(
-                `http://192.168.225.252:3000/shops/${id}/orders.json`
+                `http://10.20.70.127:3000/shops/${id}/orders.json`
             );
 
             //throw JSON.stringify(response.data.data);
