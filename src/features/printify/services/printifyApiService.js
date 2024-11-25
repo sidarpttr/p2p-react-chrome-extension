@@ -5,14 +5,7 @@ class PrintifyApiService {
         this.printify = new Printify();
     }
 
-    /**
-     *
-     * @param {Function} cb
-     */
-    async init() {
-        await this.printify.init();
-    }
-
+    
 
 }
 

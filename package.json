@@ -1,8 +1,8 @@
 {
   "name": "p2p-chrome-extension",
   "version": "0.1.0",
-  "description": "A Chrome extension using React",
-  "private": true,
+  "description": "P2P Printify to ePortal: Chrome Kolay Faturalandırma Eklentisi",
+  "private": false,
   "scripts": {
     "watch": "webpack --mode=development --watch --config config/webpack.config.js",
     "build": "webpack --mode=production --config config/webpack.config.js"
@@ -42,5 +42,15 @@
     "url": "^0.11.4",
     "uuid": "^11.0.3",
     "xml2js": "^0.6.2"
-  }
+  },
+
+  "keywords": [
+    "printify",
+    "ePortal",
+    "Fatura",
+    "Invoice",
+    "Chrome",
+    "Extension",
+    "React"
+  ]
 }
