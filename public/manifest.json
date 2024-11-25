@@ -14,7 +14,9 @@
     "type": "module"
   },
   "host_permissions": [
-    "https://api.printify.com/*"
+    "https://api.printify.com/*",
+    "https://earsivportal.efatura.gov.tr/*",
+    "https://earsivportaltest.efatura.gov.tr/*"
   ],
   "action": {
     "default_title": "P2p Extension",

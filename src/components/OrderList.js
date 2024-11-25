@@ -1,4 +1,4 @@
-import React, { Suspense, useEffect, useState } from "react";
+import React, { Suspense, useContext, useEffect, useState } from "react";
 import {
     Box,
     Card,
@@ -14,6 +14,7 @@ import Printify from "../features/printify/repositories/printify";
 import Order from "../features/printify/models/order";
 import { NavigateNext } from "@mui/icons-material";
 import GoBackFab from "./goBackFab";
+import { AppContext } from "./popup";
 
 /**
  *
@@ -21,16 +22,19 @@ import GoBackFab from "./goBackFab";
  * @param {Object} shop
  * @returns
  */
-const OrderList = ({ printify, shop }) => {
+const OrderList = ({ shop }) => {
+    const { state, setState } = useContext(AppContext);
+    if (state == null) {
+        return;
+    }
     const [orders, setOrders] = useState([]);
     const [error, setError] = useState(null);
     useEffect(() => {
         async function getOrders() {
             try {
-                const response = await printify.getOrders(shop);
+                const response = await state.printify.getOrders(shop);
                 setOrders(Order.toOrdersList(response));
             } catch (error) {
-                console.log(error);
                 setError(error);
             }
         }

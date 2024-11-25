@@ -6,17 +6,22 @@ import {
     OutlinedInput,
     Typography,
 } from "@mui/material";
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import eArsivPortal from "../features/portal/services/portal";
 import { goBack } from "react-chrome-extension-router";
 import ErrorMessage from "./Error";
+import { AppContext } from "./popup";
 
 /**
  *
  * @param {eArsivPortal} portal
  * @returns
  */
-const PortalLoginForm = ({ open, onClose, portal }) => {
+const PortalLoginForm = ({ open, onClose }) => {
+    const { state, setState } = useContext(AppContext);
+    if (state == null) {
+        return;
+    }
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(false);
     const [kullanici_kodu, setKullaniciKodu] = useState("");
@@ -25,9 +30,9 @@ const PortalLoginForm = ({ open, onClose, portal }) => {
     const handleSubmit = async () => {
         setLoading(true);
         try {
-            portal.kullanici_kodu = kullanici_kodu;
-            portal.sifre = sifre;
-            const response = await portal.giris_yap();
+            state.portal.kullanici_kodu = kullanici_kodu;
+            state.portal.sifre = sifre;
+            const response = await state.portal.giris_yap();
             if (!response) {
                 setError(new Error("kullanici kodu veya sifre hatalı"));
             }
