@@ -8,13 +8,12 @@ import {
     IconButton,
     Typography,
 } from "@mui/material";
-import Skeletons from "../molecules/Skeletons";
+import Skeletons from "../atoms/Skeletons";
 import ErrorMessage from "../atoms/Error";
 import Printify from "../../features/printify/repositories/printify";
 import Order from "../../features/printify/models/order";
 import { NavigateNext } from "@mui/icons-material";
-import GoBackFab from "../molecules/goBackFab";
-import { AppContext } from "./popup";
+import { AppContext } from "../pages/popup";
 
 /**
  *
@@ -32,10 +31,13 @@ const OrderList = ({ shop }) => {
     useEffect(() => {
         async function getOrders() {
             try {
-                const response = await state.printify.getOrders(shop, state.printify);
+                const response = await state.printify.getOrders(
+                    shop,
+                    state.printify
+                );
                 setOrders(Order.toOrdersList(response));
             } catch (error) {
-                throw error;
+                throw error; //TODO
                 setError(error);
             }
         }
@@ -52,7 +54,6 @@ const OrderList = ({ shop }) => {
                           <OrderListItem order={order} key={order.id} />
                       ))}
             </Suspense>
-            <GoBackFab />
         </>
     );
 };

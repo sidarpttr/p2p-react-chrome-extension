@@ -17,13 +17,13 @@ P2p Extension, Printify'daki siparişlerinizi kolayca ePortal'da faturalandırma
 1. Depoyu klonlayın:
 
     ```bash
-    git clone https://github.com/kullaniciadi/p2p-extension.git
+    git clone https://github.com/sidarpttr/p2p-react-chrome-extension.git
     ```
 
 2. Proje dizinine gidin:
 
     ```bash
-    cd p2p-extension
+    cd p2p-react-chrome-extension
     ```
 
 3. Bağımlılıkları yükleyin:

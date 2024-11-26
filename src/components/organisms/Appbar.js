@@ -3,8 +3,8 @@ import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
 import { Box, Step, StepLabel, Stepper } from "@mui/material";
 import Printify from "../../features/printify/repositories/printify";
-import SetTokenDialog from "./SetTokenDialog";
-import PortalLoginForm from "./ePortalLogin";
+import SetTokenDialog from "../molecules/SetTokenDialog";
+import PortalLoginForm from "../molecules/ePortalLogin";
 import { AppContext } from "../pages/popup";
 
 const steps = ["Printify token", "ePortal giriş"];
