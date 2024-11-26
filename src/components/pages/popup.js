@@ -1,15 +1,15 @@
 import React, { useEffect, useContext, useState, createContext } from "react";
 import { Box, CssBaseline } from "@mui/material";
 import { ThemeProvider } from "@mui/material/styles";
-import Appbar from "./Appbar";
-import Printify from "../features/printify/repositories/printify";
-import theme from "../theme";
+import Appbar from "../organisms/Appbar.js";
+import Printify from "../../features/printify/repositories/printify.js";
+import theme from "../../theme.js";
 import { Router } from "react-chrome-extension-router";
-import Skeletons from "./Skeletons";
-import ListShops from "./ListShops";
-import ErrorMessage from "./Error";
-import eArsivPortal from "../features/portal/services/portal.js";
-import { PrintifyHatasi } from "../features/printify/models/hatalar.js";
+import Skeletons from "../molecules/Skeletons.js";
+import ListShops from "./ListShops.js";
+import ErrorMessage from "../atoms/Error.js";
+import eArsivPortal from "../../features/portal/services/portal.js";
+import { PrintifyHatasi } from "../../features/printify/models/hatalar.js";
 
 export const AppContext = createContext();
 

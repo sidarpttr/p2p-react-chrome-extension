@@ -6,7 +6,7 @@ import {
     Dialog,
     Typography,
 } from "@mui/material";
-import { AppContext } from "./popup";
+import { AppContext } from "../pages/popup";
 
 const SetTokenDialog = ({ open, onClose }) => {
     const { state, setState } = useContext(AppContext);

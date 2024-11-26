@@ -7,10 +7,10 @@ import {
     Typography,
 } from "@mui/material";
 import React, { useContext, useState } from "react";
-import eArsivPortal from "../features/portal/services/portal";
+import eArsivPortal from "../../features/portal/services/portal";
 import { goBack } from "react-chrome-extension-router";
-import ErrorMessage from "./Error";
-import { AppContext } from "./popup";
+import ErrorMessage from "../atoms/Error";
+import { AppContext } from "../pages/popup";
 
 /**
  *

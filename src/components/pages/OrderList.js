@@ -8,12 +8,12 @@ import {
     IconButton,
     Typography,
 } from "@mui/material";
-import Skeletons from "./Skeletons";
-import ErrorMessage from "./Error";
-import Printify from "../features/printify/repositories/printify";
-import Order from "../features/printify/models/order";
+import Skeletons from "../molecules/Skeletons";
+import ErrorMessage from "../atoms/Error";
+import Printify from "../../features/printify/repositories/printify";
+import Order from "../../features/printify/models/order";
 import { NavigateNext } from "@mui/icons-material";
-import GoBackFab from "./goBackFab";
+import GoBackFab from "../molecules/goBackFab";
 import { AppContext } from "./popup";
 
 /**

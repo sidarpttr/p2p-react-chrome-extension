@@ -87,7 +87,7 @@ class Printify {
         }
 
         const response = await axios.get(
-            `http://10.20.70.127:3000/shops/${id}/orders.json`
+            `http://192.168.30.252:3000/shops/${id}/orders.json`
         );
 
         var istenmeyen_idler = printify.faturalar.map((fat) => fat.order_id);

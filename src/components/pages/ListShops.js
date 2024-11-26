@@ -1,9 +1,9 @@
 import React, { useContext } from "react";
 import { List, ListItem, ListItemText, Typography } from "@mui/material";
-import theme from "../theme";
+import theme from "../../theme";
 import { goTo } from "react-chrome-extension-router";
 import OrderList from "./OrderList";
-import Printify from "../features/printify/repositories/printify";
+import Printify from "../../features/printify/repositories/printify";
 import { AppContext } from "./popup";
 
 /**
