@@ -2,10 +2,10 @@ import React, { useContext, useState } from "react";
 import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
 import { Box, Step, StepLabel, Stepper } from "@mui/material";
-import Printify from "../features/printify/repositories/printify";
+import Printify from "../../features/printify/repositories/printify";
 import SetTokenDialog from "./SetTokenDialog";
 import PortalLoginForm from "./ePortalLogin";
-import { AppContext } from "./popup";
+import { AppContext } from "../pages/popup";
 
 const steps = ["Printify token", "ePortal giriş"];
 
