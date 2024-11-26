@@ -2,9 +2,10 @@ import React, { useContext } from "react";
 import { List, ListItem, ListItemText, Typography } from "@mui/material";
 import theme from "../../theme";
 import { goTo } from "react-chrome-extension-router";
-import OrderList from "./OrderList";
+import OrderList from "../organisms/OrderList";
 import Printify from "../../features/printify/repositories/printify";
 import { AppContext } from "./popup";
+import OrdersPage from "./OrdersPage";
 
 /**
  *
@@ -31,7 +32,7 @@ const ListShops = () => {
                                 marginBottom: 2,
                             }}
                             onClick={() => {
-                                goTo(OrderList, { shop });
+                                goTo(OrdersPage, { shop });
                             }}
                         >
                             <ListItemText

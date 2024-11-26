@@ -5,7 +5,7 @@ import Appbar from "../organisms/Appbar.js";
 import Printify from "../../features/printify/repositories/printify.js";
 import theme from "../../theme.js";
 import { Router } from "react-chrome-extension-router";
-import Skeletons from "../molecules/Skeletons.js";
+import Skeletons from "../atoms/Skeletons.js";
 import ListShops from "./ListShops.js";
 import ErrorMessage from "../atoms/Error.js";
 import eArsivPortal from "../../features/portal/services/portal.js";
