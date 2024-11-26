@@ -15,6 +15,7 @@ export const AppContext = createContext();
 
 export const AppProvider = ({ children }) => {
     const printify_token = localStorage.getItem("printify_token") || "";
+    const printfy_faturalar = localStorage.getItem("faturalar");
     const portal_token = localStorage.getItem("portal_token") || "";
 
     const printify = new Printify(printify_token);
