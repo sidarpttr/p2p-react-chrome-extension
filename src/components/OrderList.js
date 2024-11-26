@@ -32,9 +32,10 @@ const OrderList = ({ shop }) => {
     useEffect(() => {
         async function getOrders() {
             try {
-                const response = await state.printify.getOrders(shop);
+                const response = await state.printify.getOrders(shop, state.printify);
                 setOrders(Order.toOrdersList(response));
             } catch (error) {
+                throw error;
                 setError(error);
             }
         }
