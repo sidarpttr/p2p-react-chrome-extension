@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import {
     Box,
     OutlinedInput,
@@ -6,20 +6,26 @@ import {
     Dialog,
     Typography,
 } from "@mui/material";
+import { AppContext } from "../pages/popup";
 
-const SetTokenDialog = ({ open, onClose, printify }) => {
-    const [token, setToken] = useState(printify.token || "");
+const SetTokenDialog = ({ open, onClose }) => {
+    const { state, setState } = useContext(AppContext);
+    if (state == null) {
+        return;
+    }
+
+    const [token, setToken] = useState(state.printify.token || "");
 
     useEffect(() => {
-        setToken(printify.token || "");
-    }, [printify.token]);
+        setToken(state.printify.token || "");
+    }, [state.printify.token]);
 
     const handleTokenChange = (event) => {
         setToken(event.target.value);
     };
 
     const handleTokenSubmit = () => {
-        printify.setToken(token);
+        state.printify.setToken(token);
         onClose();
     };
 

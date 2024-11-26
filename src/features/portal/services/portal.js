@@ -207,8 +207,9 @@ class eArsivPortal {
                 ettn = fatura.faturaUuid;
                 break;
             }
-            return this.__nesne_ver("FaturaOlustur", { ettn });
         }
+
+        return new Fatura(ettn, order.id);
     }
 }
 

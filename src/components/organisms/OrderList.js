@@ -1,4 +1,4 @@
-import React, { Suspense, useEffect, useState } from "react";
+import React, { Suspense, useContext, useEffect, useState } from "react";
 import {
     Box,
     Card,
@@ -8,12 +8,12 @@ import {
     IconButton,
     Typography,
 } from "@mui/material";
-import Skeletons from "./Skeletons";
-import ErrorMessage from "./Error";
-import Printify from "../features/printify/repositories/printify";
-import Order from "../features/printify/models/order";
+import Skeletons from "../atoms/Skeletons";
+import ErrorMessage from "../atoms/Error";
+import Printify from "../../features/printify/repositories/printify";
+import Order from "../../features/printify/models/order";
 import { NavigateNext } from "@mui/icons-material";
-import GoBackFab from "./goBackFab";
+import { AppContext } from "../pages/popup";
 
 /**
  *
@@ -21,16 +21,23 @@ import GoBackFab from "./goBackFab";
  * @param {Object} shop
  * @returns
  */
-const OrderList = ({ printify, shop }) => {
+const OrderList = ({ shop }) => {
+    const { state, setState } = useContext(AppContext);
+    if (state == null) {
+        return;
+    }
     const [orders, setOrders] = useState([]);
     const [error, setError] = useState(null);
     useEffect(() => {
         async function getOrders() {
             try {
-                const response = await printify.getOrders(shop);
+                const response = await state.printify.getOrders(
+                    shop,
+                    state.printify
+                );
                 setOrders(Order.toOrdersList(response));
             } catch (error) {
-                console.log(error);
+                throw error; //TODO
                 setError(error);
             }
         }
@@ -47,7 +54,6 @@ const OrderList = ({ printify, shop }) => {
                           <OrderListItem order={order} key={order.id} />
                       ))}
             </Suspense>
-            <GoBackFab />
         </>
     );
 };

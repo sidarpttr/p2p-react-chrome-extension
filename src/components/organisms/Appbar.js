@@ -1,10 +1,11 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
-import { Box, Step, StepLabel, Stepper, Tooltip } from "@mui/material";
-import Printify from "../features/printify/repositories/printify";
-import SetTokenDialog from "./SetTokenDialog";
-import PortalLoginForm from "./ePortalLogin";
+import { Box, Step, StepLabel, Stepper } from "@mui/material";
+import Printify from "../../features/printify/repositories/printify";
+import SetTokenDialog from "../molecules/SetTokenDialog";
+import PortalLoginForm from "../molecules/ePortalLogin";
+import { AppContext } from "../pages/popup";
 
 const steps = ["Printify token", "ePortal giriş"];
 
@@ -13,7 +14,9 @@ const steps = ["Printify token", "ePortal giriş"];
  * @param {Printify} printfy
  * @returns
  */
-const Appbar = ({ printify, portal }) => {
+const Appbar = () => {
+    const { state, setState } = useContext(AppContext);
+
     //printify token dialogu için
     const [token_open, setTokenOpen] = useState(false);
 
@@ -21,7 +24,7 @@ const Appbar = ({ printify, portal }) => {
     const [login_open, setLoginOpen] = useState(false);
 
     //token ve e portal girişi kontrol için
-    const activeStep = portal.token ? 2 : printify.token ? 1 : 0;
+    const activeStep = state.portal.token ? 2 : state.printify.token ? 1 : 0;
 
     const token_handleClickOpen = () => {
         //printify tokeni dialogu için açma fonksiyonu
@@ -46,16 +49,8 @@ const Appbar = ({ printify, portal }) => {
     return (
         <>
             {_buildAppBar()}
-            <SetTokenDialog
-                open={token_open}
-                onClose={token_handleClose}
-                printify={printify}
-            />
-            <PortalLoginForm
-                open={login_open}
-                onClose={login_handleClose}
-                portal={portal}
-            />
+            <SetTokenDialog open={token_open} onClose={token_handleClose} />
+            <PortalLoginForm open={login_open} onClose={login_handleClose} />
         </>
     );
 

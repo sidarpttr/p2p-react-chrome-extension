@@ -6,12 +6,14 @@ class Printify {
     /**
      *
      * @param {String} token
+     * @param {Array} faturalar
      */
-    constructor(token) {
+    constructor(token, faturalar) {
         this.token = token;
         this.shops = [];
         this.oturum = modernSession();
         this.base_url = "https://api.printify.com/v1/";
+        this.faturalar = faturalar || [];
     }
 
     async init() {
@@ -51,7 +53,7 @@ class Printify {
      *
      * @param {Object} shop
      */
-    async getOrders(shop) {
+    async getAllOrders(shop) {
         const id = shop.id;
         if (!this.token) {
             throw new OturumSonlandi(`Token geçersiz: ${this.token}`);
@@ -76,6 +78,25 @@ class Printify {
         } catch (error) {
             throw new Error(error);
         }
+    }
+
+    async getOrders(shop, printify) {
+        const id = shop.id;
+        if (!this.token) {
+            throw new OturumSonlandi(`Token geçersiz: ${this.token}`);
+        }
+
+        const response = await axios.get(
+            `http://192.168.30.252:3000/shops/${id}/orders.json`
+        );
+
+        var istenmeyen_idler = printify.faturalar.map((fat) => fat.order_id);
+
+        const result = response.data.data.filter(
+            (order) => !istenmeyen_idler.includes(order.id)
+        );
+
+        return result;
     }
 }
 
