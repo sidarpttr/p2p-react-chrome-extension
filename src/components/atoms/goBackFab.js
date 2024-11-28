@@ -1,6 +1,6 @@
 import React from "react";
 import { ArrowBackIosNew } from "@mui/icons-material";
-import { AppBar, Fab, IconButton, Toolbar } from "@mui/material";
+import { Fab } from "@mui/material";
 import { goBack } from "react-chrome-extension-router";
 const GoBackFab = () => {
     return (
