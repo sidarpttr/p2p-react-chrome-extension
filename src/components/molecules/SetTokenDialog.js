@@ -5,6 +5,7 @@ import {
     IconButton,
     Dialog,
     Typography,
+    Button,
 } from "@mui/material";
 import { AppContext } from "../pages/popup";
 
@@ -38,6 +39,9 @@ const SetTokenDialog = ({ open, onClose }) => {
                     flexDirection: "column",
                     alignItems: "center",
                     padding: 2,
+                    paddingTop: 5,
+                    paddingBottom:5,
+                    backgroundColor: "#111",
                 }}
             >
                 <OutlinedInput
@@ -46,13 +50,14 @@ const SetTokenDialog = ({ open, onClose }) => {
                     onChange={handleTokenChange}
                     sx={{ marginBottom: 2, width: "100%", borderRadius: 2 }}
                 />
-                <IconButton
+                <Button
                     color="primary"
                     variant="contained"
                     onClick={handleTokenSubmit}
+                    sx={{ mt: 2 }}
                 >
-                    <Typography variant="body1">Tamam</Typography>
-                </IconButton>
+                    Set Token
+                </Button>
             </Box>
         </Dialog>
     );

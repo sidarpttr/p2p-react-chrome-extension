@@ -37,7 +37,6 @@ const OrderList = ({ shop }) => {
                 );
                 setOrders(Order.toOrdersList(response));
             } catch (error) {
-                throw error; //TODO
                 setError(error);
             }
         }

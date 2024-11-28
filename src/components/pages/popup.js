@@ -8,7 +8,7 @@ import { Router } from "react-chrome-extension-router";
 import Skeletons from "../atoms/Skeletons.js";
 import ListShops from "./ListShops.js";
 import ErrorMessage from "../atoms/Error.js";
-import eArsivPortal from "../../features/portal/services/portal.js";
+import eArsivPortal from "../../features/portal/repositories/portal.js";
 import { PrintifyHatasi } from "../../features/printify/models/hatalar.js";
 
 export const AppContext = createContext();
