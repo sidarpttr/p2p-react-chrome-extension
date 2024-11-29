@@ -16,7 +16,7 @@ html {
 
 body {
     width:400px;
-    height: 450px;
+    height: auto;
     background-color: #111;
 }
 body::-webkit-scrollbar {

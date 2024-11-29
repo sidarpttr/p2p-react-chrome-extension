@@ -1,5 +1,5 @@
 import { ePortalHatasi } from "../../portal/models/hatalar";
-import eArsivPortal from "../../portal/services/portal";
+import eArsivPortal from "../../portal/repositories/portal";
 import Order from "../models/order";
 import Printify from "../repositories/printify";
 
@@ -24,7 +24,8 @@ class PrintifyApiService {
             if (!fatura) {
                 throw Error("fatura oluşturulamadı");
             }
-            this.printify.faturalar.push(fatura);
+            this.printify.faturaEkle(fatura);
+            return true;
         } catch (error) {
             throw new ePortalHatasi(`Portal Hatası: ${error.message}`);
         }

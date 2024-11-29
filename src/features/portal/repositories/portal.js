@@ -1,10 +1,11 @@
 import Order from "../../printify/models/order";
+import Fatura from "../models/Fatura";
+import { ePortalHatasi } from "../models/hatalar";
 
 const { v4: uuidv4 } = require("uuid");
 const { Komut, Komutlar } = require("../models/komutlar");
-const { fatura_ver } = require("./fatura_ver");
-const moment = require("moment-timezone");
-const { legacySession, modernSession } = require("./../../session");
+const { fatura_ver } = require("../services/fatura_ver");
+const { modernSession } = require("./../../session");
 const qs = require("qs");
 
 class eArsivPortal {
@@ -13,17 +14,21 @@ class eArsivPortal {
      * @param {String} kullanici_kodu
      * @param {String} sifre
      * @param {boolean} test_modu
+     * @param {String} token
+     * @param {Array} faturalar
      */
     constructor(
         kullanici_kodu = "33333315",
         sifre = "1",
         test_modu = true,
-        token
+        token,
+        faturalar
     ) {
         this.kullanici_kodu = kullanici_kodu;
         this.sifre = sifre;
         this.test_modu = test_modu;
         this.token = token;
+        this.faturalar = faturalar || [];
 
         const apiler = {
             YAYIN: "https://earsivportal.efatura.gov.tr",
@@ -42,6 +47,53 @@ class eArsivPortal {
 
     setSifre(sifre) {
         this.sifre = sifre;
+    }
+
+    /**
+     *
+     * @param {Fatura} fatura
+     */
+    faturaEkle(fatura) {
+        // TODO
+        this.faturalar.push(fatura);
+        localStorage.setItem("portal_faturalar", this.faturalar);
+    }
+
+    /**
+     *
+     * @param {String} baslangic_tarihi
+     * @param {String} bitis_tarihi
+     * @returns {Fatura[]}
+     */
+    async faturalari_getir(baslangic_tarihi, bitis_tarihi) {
+        //const response = await this.__kod_calistir(
+        //    this.komutlar.TASLAKLARI_GETIR,
+        //    {
+        //        baslangic: baslangic_tarihi,
+        //        bitis: bitis_tarihi,
+        //        hangiTip: "5000/30000",
+        //        table: [],
+        //    }
+        //);
+
+        const response = await this.oturum.get(
+            "http://192.168.178.252:3000/portal/faturalar"
+        );
+
+        const data = response.data.map(
+            (fatura) =>
+                new Fatura(
+                    fatura.belgeNumarasi,
+                    fatura.aliciVknTckn,
+                    fatura.aliciUnvanAdSoyad,
+                    fatura.belgeTarihi,
+                    fatura.belgeTuru,
+                    fatura.onayDurumu,
+                    fatura.ettn
+                )
+        );
+
+        return data;
     }
 
     __istek_ayristir(response, data) {
@@ -137,6 +189,50 @@ class eArsivPortal {
         }
     }
 
+    async gib_ibza() {
+        const telefon_istek = await this.__kod_calistir(
+            this.komutlar.TELEFONNO_SORGULA,
+            {}
+        );
+        const telefon_veri = telefon_istek.data;
+        const telefon_no = telefon_veri.telefon;
+
+        if (!telefon_no) {
+            throw ePortalHatasi("telefon numarası bulunamadı!");
+        }
+
+        const sms_gonder = await this.__kod_calistir(
+            this.komutlar.SMSSIFRE_GONDER,
+            {
+                CEPTEL: telefon_no,
+                KCEPTEL: false,
+                TIP: "",
+            }
+        );
+
+        return sms_gonder.data;
+    }
+
+    /**
+     *
+     * @param {Array} faturalar
+     * @param {String} oid
+     * @param {String} sifre
+     */
+    async gib_sms_onay(faturalar, oid, sifre) {
+        const response = await this.__kod_calistir(
+            this.komutlar.SMSSIFRE_DOGRULA,
+            {
+                SIFRE: sifre,
+                OID: oid,
+                OPR: 1,
+                DATA: self.__fatura_ver(faturalar),
+            }
+        );
+        const data = response.data;
+        return this.__nesne_ver("GibSMSOnay", { mesaj: data.msg });
+    }
+
     async bilgilerim() {
         const response = await this.__kod_calistir(
             this.komutlar.KULLANICI_BILGILERI_GETIR,
@@ -200,6 +296,11 @@ class eArsivPortal {
                 this.komutlar.FATURA_OLUSTUR,
                 fatura
             );
+
+            //const response = await this.oturum.get(
+            //    "http://192.168.178.252:3000/portal/fatura-gonder"
+            //);
+
             var ettn = null;
             if (
                 response.data.includes("Faturanız başarıyla oluşturulmuştur.")
@@ -209,7 +310,7 @@ class eArsivPortal {
             }
         }
 
-        return new Fatura(ettn, order.id);
+        return new Fatura(ettn, order);
     }
 }
 

@@ -1,16 +1,10 @@
-import {
-    Box,
-    CircularProgress,
-    Dialog,
-    IconButton,
-    OutlinedInput,
-    Typography,
-} from "@mui/material";
+import { Button, CircularProgress, OutlinedInput } from "@mui/material";
 import React, { useContext, useState } from "react";
-import eArsivPortal from "../../features/portal/services/portal";
+import eArsivPortal from "../../features/portal/repositories/portal";
 import { goBack } from "react-chrome-extension-router";
 import ErrorMessage from "../atoms/Error";
 import { AppContext } from "../pages/popup";
+import FullScreenDialog from "../atoms/fullScreenDialog";
 
 /**
  *
@@ -20,7 +14,7 @@ import { AppContext } from "../pages/popup";
 const PortalLoginForm = ({ open, onClose }) => {
     const { state, setState } = useContext(AppContext);
     if (state == null) {
-        return;
+        return null;
     }
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(false);
@@ -45,53 +39,42 @@ const PortalLoginForm = ({ open, onClose }) => {
     };
 
     return (
-        <Dialog open={open} onClose={onClose}>
-            <Box
-                component="form"
+        <FullScreenDialog open={open} onClose={onClose} title={"ePortal Giriş"}>
+            <img
+                src="https://earsivportal.efatura.gov.tr/sf/img/imzaloginfiles/logo.png"
+                alt="Printify Logo"
+                style={{ marginBottom: 50 }}
+            />
+            <OutlinedInput
+                placeholder="kullanıcı kodu"
+                onChange={(event) => setKullaniciKodu(event.target.value)}
                 sx={{
-                    display: "flex",
-                    flexDirection: "column",
-                    alignItems: "center",
-                    padding: 2,
+                    marginBottom: 1,
+                    marginTop: 2,
+                    width: "100%",
+                    borderRadius: 2,
                 }}
+            />
+            <OutlinedInput
+                placeholder="şifre"
+                onChange={(event) => setSifre(event.target.value)}
+                sx={{
+                    marginBottom: 1,
+                    marginTop: 2,
+                    width: "100%",
+                    borderRadius: 2,
+                }}
+            />
+            <Button
+                color="primary"
+                variant="contained"
+                onClick={handleSubmit}
+                sx={{ mt: 2 }}
             >
-                <Typography variant="h5">Login ePortal</Typography>
-                <OutlinedInput
-                    placeholder="kullanıcı kodu"
-                    onChange={(event) => setKullaniciKodu(event.target.value)}
-                    sx={{
-                        marginBottom: 1,
-                        marginTop: 2,
-                        width: "100%",
-                        borderRadius: 2,
-                    }}
-                />
-                <OutlinedInput
-                    placeholder="şifre"
-                    onChange={(event) => setSifre(event.target.value)}
-                    sx={{
-                        marginBottom: 1,
-                        marginTop: 2,
-                        width: "100%",
-                        borderRadius: 2,
-                    }}
-                />
-                <IconButton
-                    color="primary"
-                    variant="contained"
-                    onClick={handleSubmit}
-                >
-                    <Typography variant="body1">Login</Typography>
-                </IconButton>
-                {loading ? (
-                    <CircularProgress />
-                ) : error ? (
-                    <ErrorMessage error={error} />
-                ) : (
-                    <></>
-                )}
-            </Box>
-        </Dialog>
+                {loading ? <CircularProgress size={24} /> : "Login"}
+            </Button>
+            {error && <ErrorMessage error={error} />}
+        </FullScreenDialog>
     );
 };
 
