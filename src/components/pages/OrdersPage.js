@@ -21,6 +21,8 @@ const OrdersPage = ({ shop }) => {
                     width: "100%",
                     position: "fixed",
                     bottom: "0",
+                    right:0,
+                    left:0,
                     backgroundColor: "#111İ",
                 }}
             >
@@ -29,10 +31,15 @@ const OrdersPage = ({ shop }) => {
                     onChange={handleChange}
                     textColor="inherit"
                     indicatorColor="primary"
-                    aria-label="secondary tabs example"
-                    centered
+                    TabIndicatorProps={{
+                        sx: {
+                            top: 0,
+                            bottom: "unset",
+                        },
+                    }}
+                    variant="fullWidth"
                 >
-                    <Tab value="one" label="Orders" />
+                    <Tab value="one" label="Orders"/>
                     <Tab value="two" label="Inovices" />
                 </Tabs>
             </Box>

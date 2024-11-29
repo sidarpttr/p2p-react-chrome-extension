@@ -77,7 +77,7 @@ class eArsivPortal {
         //);
 
         const response = await this.oturum.get(
-            "http://192.168.81.252:3000/portal/faturalar"
+            "http://192.168.178.252:3000/portal/faturalar"
         );
 
         const data = response.data.map(
@@ -292,15 +292,18 @@ class eArsivPortal {
         );
 
         while (true) {
-            //const response = await this.__kod_calistir(
-            //    this.komutlar.FATURA_OLUSTUR,
-            //    fatura
+            const response = await this.__kod_calistir(
+                this.komutlar.FATURA_OLUSTUR,
+                fatura
+            );
+
+            //const response = await this.oturum.get(
+            //    "http://192.168.178.252:3000/portal/fatura-gonder"
             //);
 
             var ettn = null;
             if (
-                true
-                //response.data.includes("Faturanız başarıyla oluşturulmuştur.")
+                response.data.includes("Faturanız başarıyla oluşturulmuştur.")
             ) {
                 ettn = fatura.faturaUuid;
                 break;

@@ -25,7 +25,6 @@ class PrintifyApiService {
                 throw Error("fatura oluşturulamadı");
             }
             this.printify.faturaEkle(fatura);
-            this.portal.faturaEkle(fatura);
             return true;
         } catch (error) {
             throw new ePortalHatasi(`Portal Hatası: ${error.message}`);

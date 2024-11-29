@@ -63,6 +63,7 @@ const Invoices = () => {
                         justifyContent={"space-between"}
                         display={"flex"}
                         width={"100%"}
+                        padding={1}
                     >
                         <Typography variant="h6">Faturalar</Typography>
                         <IconButton onClick={() => setVisible(true)}>
@@ -141,8 +142,8 @@ const Invoices = () => {
                     }}
                 >
                     <Box>
-                        <Typography variant="h6">{days[0]}</Typography>
-                        <Typography variant="h6">{days[1]}</Typography>
+                        <Typography>{days[0]}</Typography>
+                        <Typography>{days[1]}</Typography>
                     </Box>
                     <IconButton
                         onClick={() => setVisible(false)}

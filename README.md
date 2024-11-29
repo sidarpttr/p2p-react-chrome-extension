@@ -10,6 +10,8 @@ P2p Extension, Printify'daki siparişlerinizi kolayca ePortal'da faturalandırma
 -   **Mağazalar**: Hesabınıza bağlı mağazaları görüntüler.
 -   **Siparişler**: Mağazalarınızdaki siparişleri alır.
 -   **Faturalandırma**: Siparişlerinizi faturalandırarar ePortal'a gönderir.
+-   **Faturaları İmzalama**: ePortaldaki tüm fatura taslaklarını imzalar.
+-   **SMS ile doğrulama**: Fatura imzalarken gereken SMS doğrulaması.
 
 
 ## Kurulum
@@ -49,19 +51,33 @@ P2p Extension, Printify'daki siparişlerinizi kolayca ePortal'da faturalandırma
 
     - e Portal için giriş:
 
-    ![ePortal Giriş Ekranı](assets/images/eportalgiris.png)
+    ![ePortal Giriş Ekranı](assets/images/eportal_login.png)
 
     - printify için token girdisi:
-      ![Printify Token Ekranı](assets/images/printifytoken.png)
+    ![Printify Token Ekranı](assets/images/printify_token.png)
 
     - Bilgilerinizi girin ve özelliklere erişmek için kimlik doğrulaması yapın.
 
 2. **Mağazalar**:
 
     - Hesabınıza bağlı mağazaların listesini görüntüleyin.
-      ![Mağazalar Ekranı](assets/images/shops.png)
+    ![Mağazalar Ekranı](assets/images/shops.png)
 
 3. **Siparişler**:
     - Mağazalarınızdaki siparişleri alın.
-      ![Printify Token Ekranı](assets/images/orders.png)
+    ![Printify Token Ekranı](assets/images/orders.png)
     - Sipariş detaylarını görüntüleyin ve ePortalda fatura oluşturun.
+
+4. **Tarih seçerek o tarihteki faturalar getirilir**:
+    - Hangi tarihlerdeki faturaları görüntüleyeceğinizi takvimden seçin.
+    ![Printify Token Ekranı](assets/images/calendar.png)
+
+    - Faturalar ve onay durumu:
+    ![Printify Token Ekranı](assets/images/invoices.png)
+
+5. **Fatura imzalama ve SMS Doğrulaması**:
+    - Faturaların imzalanabilmesi için SMS şifre doğrulaması.
+    ![Printify Token Ekranı](assets/images/sms.png)
+
+
+

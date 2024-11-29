@@ -58,7 +58,12 @@ const Appbar = () => {
         return (
             <AppBar
                 position="sticky"
-                style={{ backgroundColor: "black", color: "#9EDF9C" }}
+                style={{
+                    backgroundColor: "black",
+                    color: "#9EDF9C",
+                    height: "100px",
+                    justifyContent: "center",
+                }}
             >
                 <Toolbar>
                     <Box
