@@ -61,11 +61,11 @@ P2p Extension, Printify'daki siparişlerinizi kolayca ePortal'da faturalandırma
 2. **Mağazalar**:
 
     - Hesabınıza bağlı mağazaların listesini görüntüleyin.
-    ![Mağazalar Ekranı](assets/images/shops.png)
+    ![Mağazalar Ekranı](assets/images/shops1.png)
 
 3. **Siparişler**:
     - Mağazalarınızdaki siparişleri alın.
-    ![Printify Token Ekranı](assets/images/orders.png)
+    ![Printify Token Ekranı](assets/images/orders1.png)
     - Sipariş detaylarını görüntüleyin ve ePortalda fatura oluşturun.
 
 4. **Tarih seçerek o tarihteki faturalar getirilir**:
